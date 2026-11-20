@@ -14,7 +14,7 @@ WORD_RE = re.compile(r"[а-яё]+(?:-[а-яё]+)*", re.IGNORECASE)
 CASE_NORMALIZATION = {"gen2": "gent", "loc2": "loct", "acc2": "accs"}
 
 morph = pymorphy3.MorphAnalyzer()
-
+#print(morph.parse("и"))
 
 def get_gender(tag):
     # Обработка общего рода, т.е. слова а-ля Сирота, Жадина и т.д.
@@ -61,10 +61,16 @@ def candidate_parses(token):
         return []
 
     parses = morph.parse(token)
-    top_pos = parses[0].tag.POS
-    if top_pos not in TARGET_POS:
+
+    if parses[0].tag.POS in {"PREP", "CONJ"}:
         return []
-    return [p for p in parses if p.tag.POS == top_pos]
+    
+    return [
+        p for p in parses
+        if p.tag.POS in TARGET_POS
+        and "Abbr" not in p.tag
+        and "Apro" not in p.tag
+    ]
 
 
 def match_pair(parses1, parses2):
