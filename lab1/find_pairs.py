@@ -5,7 +5,6 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 INPUT_FILE = "input.txt"
 TARGET_POS = {"NOUN", "ADJF"}
 WORD_RE = re.compile(r"[а-яё]+(?:-[а-яё]+)*", re.IGNORECASE)
-morph = pymorphy3.MorphAnalyzer()
 
 # Какие-то морфлогические причуды, которые лучше упростить
 # gen2 - тоже родительный, но из разряда "чаю"
